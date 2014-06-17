@@ -1,6 +1,6 @@
 import rdflib
 import json
-
+import re
 
 g=rdflib.Graph()
 g.load("newspapers.rdf")
@@ -13,7 +13,7 @@ for s,p,o in g:
         seen[s][p] = o
     except:
         seen[s] = dict()
-        seen[s][p]] = o
+        seen[s][p] = o
 
 def convertID(string):
     try:

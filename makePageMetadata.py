@@ -5,6 +5,7 @@ import json
 import re
 
 for line in sys.stdin:
+    line = line.split("\t")[0]
     output = dict()
     splat = line.split("/")
     output['paper'] = splat[0]

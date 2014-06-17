@@ -17,11 +17,8 @@ class tarballExtractor(object):
         if name[-1:-5:-1]=="txt.":
             #ie, the last four characters are '.txt'; skips directories and XML files.
             name=name[:-4]
-            if self.printFullFileText:
-                content = self.input.extractfile(info).read()
-                return name + "\t" + re.sub("\n"," ",content)
-            else:
-                return name
+            content = self.input.extractfile(info).read()
+            return name + "\t" + re.sub("\n"," ",content)
         else:
             #if it's not text, recurse through the next line.
             #May break by recursion limit if the file contains a
@@ -39,11 +36,5 @@ def printDirectory(dirname,printFullFileText=True):
 
 if __name__=="__main__":
     import sys
-    printAll = True
-    try:
-        if sys.argv[2]=="titles":
-            printAll=False
-    except:
-        pass
-    printDirectory(sys.argv[1],printFullFileText=printAll)
+    printDirectory(sys.argv[1])
 
