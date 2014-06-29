@@ -22,7 +22,7 @@ input.txt: jsoncatalog.txt
 
 bookworm:
 	git clone git@github.com:bmschmidt/Presidio bookworm
-	cd bookworm; git checkout lessDiskSpace
+	cd bookworm; git checkout master
 
 bookworm/bookworm.cnf: bookworm
 	python bookworm/scripts/makeConfiguration.py
