@@ -11,9 +11,9 @@ docs = file['ocr']
 
 
 def checksum(filename):
-"""
-code from http://www.pythoncentral.io/hashing-files-with-python/
-"""
+    """
+    code from http://www.pythoncentral.io/hashing-files-with-python/
+    """
     BLOCKSIZE = 65536
     hasher = hashlib.sha1()
     with open(filename, 'rb') as afile:
@@ -29,7 +29,7 @@ for doc in docs:
         original = doc['sha1']
         downloaded = checksum("downloads/"+name)
         if original != downloaded:
-            print "removing " + name
+            print "REMOVING " + name
             os.remove("downloads/" + name)
         else:
             print name + " checks out OK"
