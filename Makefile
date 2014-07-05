@@ -2,6 +2,9 @@ targets = $(addprefix downloads/,$(shell curl http://chroniclingamerica.loc.gov/
 
 all: bookworm/bookworm.cnf $(targets)
 
+bookwormdatabase: bookworm/bookworm.cnf bookworm/files/metadata/jsoncatalog.txt bookworm/files/texts/input.txt bookworm/files/metadata/field_descriptions.json
+	cd bookworm; make;
+
 downloads/%.tar.bz2:
 	mkdir -p downloads
 	-curl -f -o $@ $(subst downloads/,http://chroniclingamerica.loc.gov/data/ocr/,$@)
@@ -11,8 +14,12 @@ bookworm/files/texts/input.txt:
 	ln -s ../../../input.txt  bookworm/files/texts/input.txt
 
 bookworm/files/metadata/jsoncatalog.txt:	
-	mkdir -p bookworm/files/texts
+	mkdir -p bookworm/files/metadata
 	ln -s ../../../jsoncatalog.txt $@
+
+bookworm/files/metadata/field_descriptions.json:	
+	mkdir -p bookworm/files/metadata
+	ln -s ../../../field_descriptions.json $@
 
 jsoncatalog.txt:
 #The page metadata is spit out from the raw files.
