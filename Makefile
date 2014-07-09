@@ -1,4 +1,22 @@
-targets = $(addprefix downloads/,$(shell curl http://chroniclingamerica.loc.gov/ocr.json | perl -ne 'if (m/"name": ?"(.*)"/) {print "$$1\n"}'))
+#locFiles = $(shell curl http://chroniclingamerica.loc.gov/ocr.json | perl -ne 'if (m/"name": ?"(.*)"/) {print "$$1\n"}')
+locFiles = $(shell cat ocr.json | perl -ne 'if (m/"name": ?"(.*)"/) {print "$$1\n"}')
+targets = $(addprefix downloads/,$(locFiles))
+
+baseNames = $(basename $(basename $(locFiles)))
+catalogs = $(addsuffix .txt.gz, $(addprefix jsoncatalogs/,$(baseNames)))
+txts = $(addsuffix .txt.gz, $(addprefix inputfiles/,$(baseNames)))
+
+
+
+parsedness: $(catalogs)
+
+
+jsoncatalogs/%.txt.gz: downloads/%.tar.bz2
+	mkdir -p jsoncatalogs inputfiles
+	python parseBZ2.py $<
+
+inputfiles/%.txt.gz: jsoncatalogs/%.txt.gz
+
 
 all: bookworm/bookworm.cnf $(targets)
 
@@ -9,7 +27,7 @@ downloads/%.tar.bz2:
 	mkdir -p downloads
 	-curl -f -o $@ $(subst downloads/,http://chroniclingamerica.loc.gov/data/ocr/,$@)
 
-bookworm/files/texts/input.txt:
+bookworm/files/texts/input.txt: input.txt
 	mkdir -p bookworm/files/texts
 	ln -s ../../../input.txt  bookworm/files/texts/input.txt
 
