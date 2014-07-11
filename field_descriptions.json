@@ -1,0 +1,15 @@
+[
+    {"field":"page","datatype":"categorical","type":"integer","unique":true},
+    {"field":"edition","datatype":"categorical","type":"integer","unique":true},
+    {"field":"paper","datatype":"categorical","type":"character","unique":true},
+    {"field":"publish","datatype":"time","type":"character","unique":true,"derived":[
+       {"resolution":"year"},
+       {"resolution":"month"},
+       {"resolution":"day"},
+       {"resolution":"day","aggregate":"year"},
+       {"resolution":"month","aggregate":"year"},
+       {"resolution":"week","aggregate":"year"}
+    ]
+    }
+]
+
