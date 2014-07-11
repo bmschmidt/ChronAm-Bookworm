@@ -1,8 +1,9 @@
 import hashlib
 import json
+import sys
 import urllib2
 import os
-
+import subprocess
 origin = urllib2.urlopen('http://chroniclingamerica.loc.gov/ocr.json')
 
 file = json.loads(origin.read())
@@ -10,29 +11,22 @@ file = json.loads(origin.read())
 docs = file['ocr']
 
 
-def checksum(filename):
-    """
-    code from http://www.pythoncentral.io/hashing-files-with-python/
-    """
-    BLOCKSIZE = 65536
-    hasher = hashlib.sha1()
-    with open(filename, 'rb') as afile:
-        buf = afile.read(BLOCKSIZE)
-        while len(buf) > 0:
-            hasher.update(buf)
-            buf = afile.read(BLOCKSIZE)
-    return hasher.hexdigest()
+print "Comparing expected and actual checksums for every download: each dot represents a successful file."
 
+def checksum(filename):
+    output = subprocess.check_output(["sha1sum",filename])
+    return output.split(" ")[0]
+    
 for doc in docs:
     try:
         name = doc['name']
         original = doc['sha1']
         downloaded = checksum("downloads/"+name)
         if original != downloaded:
-            print "REMOVING " + name
+            print "\nREMOVING " + name
             os.remove("downloads/" + name)
         else:
-            print name + " checks out OK"
+            sys.stdout.write(".")
     except:
         print "problem with "
         print doc
