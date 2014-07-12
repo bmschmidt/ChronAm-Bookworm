@@ -1,4 +1,5 @@
 [
+	{"field":"searchstring","datatype":"searchstring","type":"text","unique":true},
     {"field":"page","datatype":"categorical","type":"integer","unique":true},
     {"field":"edition","datatype":"categorical","type":"integer","unique":true},
     {"field":"paper","datatype":"categorical","type":"character","unique":true},
