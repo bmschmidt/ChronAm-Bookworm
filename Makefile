@@ -22,7 +22,7 @@ inputfiles/%.txt.gz: jsoncatalogs/%.txt.gz
 all: bookworm/bookworm.cnf $(targets)
 
 bookwormdatabase: bookworm/bookworm.cnf bookworm/files/metadata/jsoncatalog.txt bookworm/files/texts/input.txt bookworm/files/metadata/field_descriptions.json
-	cd bookworm; make all textStream="cat ../inputfiles/* | gunzip -c";
+	cd bookworm; make all textStream='find ../inputfiles -name "*.gz" | xargs gunzip -c';
 
 downloads/%.tar.bz2:
 	mkdir -p downloads
