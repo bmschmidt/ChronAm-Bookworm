@@ -1,10 +1,14 @@
-#locFiles = $(shell curl http://chroniclingamerica.loc.gov/ocr.json | perl -ne 'if (m/"name": ?"(.*)"/) {print "$$1\n"}')
-locFiles = $(shell cat ocr.json | perl -ne 'if (m/"name": ?"(.*)"/) {print "$$1\n"}')
+locFiles = $(shell curl http://chroniclingamerica.loc.gov/ocr.json | perl -ne 'if (m/"name": ?"(.*)"/) {print "$$1\n"}')
+#locFiles = $(shell cat ocr.json | perl -ne 'if (m/"name": ?"(.*)"/) {print "$$1\n"}')
 targets = $(addprefix downloads/,$(locFiles))
 
 baseNames = $(basename $(basename $(locFiles)))
 catalogs = $(addsuffix .txt.gz, $(addprefix jsoncatalogs/,$(baseNames)))
 txts = $(addsuffix .txt.gz, $(addprefix inputfiles/,$(baseNames)))
+
+####
+#First: downloading.
+####
 
 downloads: $(targets)
 
@@ -18,6 +22,12 @@ jsoncatalogs/%.txt.gz: downloads/%.tar.bz2
 	python parseBZ2.py $<
 
 inputfiles/%.txt.gz: jsoncatalogs/%.txt.gz
+
+
+
+####
+#Then: Building
+####
 
 all: bookworm/bookworm.cnf $(targets)
 
@@ -56,7 +66,20 @@ bookworm:
 #bookworm/bookworm.cnf: bookworm bookworm.cnf
 #	cp bookworm.cnf bookworm/bookworm.cnf
 
+
+###
+#Then: better metadata
+###
+
 newspapers.rdf:
 	curl -o newspapers.rdf http://chroniclingamerica.loc.gov/newspapers.rdf
+
+newspaperdata.json: 
+#Should require newspapers.rdf, but I'm skipping.
+	python parseRDF.py > $@
+
+
+
+
 
 
