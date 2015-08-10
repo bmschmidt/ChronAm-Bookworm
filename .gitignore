@@ -9,3 +9,5 @@ jsoncatalogs/
 inputfiles/
 ocr.json ocr.json.1 ocr.json.2
 ocr.json
+newspaperdata.txt
+newspaperdata.json
